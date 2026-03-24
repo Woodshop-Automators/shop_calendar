@@ -104,3 +104,30 @@ If you need to redeploy the API:
 8. Click Deploy
 9. Copy the Web App URL
 10. Update `config.js` with the new URL
+
+## Automated Deployment (GitHub Actions)
+
+The project includes automatic deployment to Google Apps Script via GitHub Actions.
+
+### How It Works
+
+1. When `apps-script.gs` is pushed to the `master` branch, the workflow automatically runs
+2. It authenticates using stored credentials
+3. It pushes the code and deploys as a Web App
+
+### Setup Required
+
+1. **Enable Apps Script API**: Go to https://script.google.com/home/usersettings
+2. **Get Script ID**: Open your Apps Script project, copy the ID from the URL
+3. **Get clasp credentials**: Run `cat ~/.clasprc.json` locally
+4. **Add GitHub Secrets**:
+   - Go to your GitHub repo → Settings → Secrets and variables → Actions
+   - Add secret `CLASPRC_JSON` with the contents of your `~/.clasprc.json`
+   - Add secret `SCRIPT_ID` with your Apps Script project ID
+5. **Update .clasp.json**: Replace `YOUR_SCRIPT_ID_HERE` with your actual Script ID
+
+### Troubleshooting Deployment
+
+- **Authentication failure**: Refresh your `CLASPRC_JSON` token
+- **Script not found**: Verify `SCRIPT_ID` is correct in `.clasp.json`
+- **Web App not updating**: Check GitHub Actions logs for errors
