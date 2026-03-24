@@ -3,11 +3,12 @@ function openModal(event) {
     const titleEl = document.getElementById('modal-title');
     const detailsEl = document.getElementById('modal-details');
 
-    titleEl.textContent = event.Title || 'Untitled Event';
+    titleEl.textContent = event.EventName || 'Untitled Event';
 
-    const startDate = new Date(event.Date);
+    const dateStr = extractDateFromEventKey(event.EventKey);
+    const startDate = dateStr ? new Date(dateStr) : new Date();
     const startTime = event.StartTime || '00:00';
-    const duration = parseInt(event.Duration) || 0;
+    const duration = parseInt(event.Duration) || 120;
     
     const [hours, minutes] = startTime.split(':').map(Number);
     const endDate = new Date(startDate);
@@ -62,23 +63,50 @@ function openModal(event) {
         `;
     }
 
-    if (event.Participants) {
+    if (event.ParticipantNames) {
         detailsHTML += `
             <div class="modal-detail">
                 <strong>Participants</strong>
-                <p>${event.Participants}</p>
+                <p>${event.ParticipantNames}</p>
             </div>
         `;
     }
 
-    if (event.TicketURL) {
+    if (event.Costs) {
         detailsHTML += `
-            <a href="${event.TicketURL}" target="_blank" class="ticket-link">Get Tickets</a>
+            <div class="modal-detail">
+                <strong>Cost</strong>
+                <p>${event.Costs}</p>
+            </div>
+        `;
+    }
+
+    if (event.Notes) {
+        detailsHTML += `
+            <div class="modal-detail">
+                <strong>Notes</strong>
+                <p>${event.Notes}</p>
+            </div>
+        `;
+    }
+
+    if (event.TicketIDs) {
+        const ticketUrl = event.TicketIDs.startsWith('http') 
+            ? event.TicketIDs 
+            : `https://${event.TicketIDs}`;
+        detailsHTML += `
+            <a href="${ticketUrl}" target="_blank" class="ticket-link">Get Tickets</a>
         `;
     }
 
     detailsEl.innerHTML = detailsHTML;
     modal.style.display = 'block';
+}
+
+function extractDateFromEventKey(eventKey) {
+    if (!eventKey) return null;
+    const parts = String(eventKey).split('|');
+    return parts[0] || null;
 }
 
 function closeModal() {

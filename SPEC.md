@@ -180,19 +180,23 @@ Google Sheet → Apps Script (doGet) → JSON API → Frontend → Rendered Cale
 
 ### Data Schema
 
-**Expected Google Sheet Columns:**
+**Google Sheet Columns (Actual):**
 
-| Column | Type | Required | Description |
-|--------|------|----------|-------------|
-| Date | YYYY-MM-DD | Yes | Event date |
-| StartTime | HH:MM | Yes | Start time (24hr) |
-| Duration | Number | Yes | Duration in minutes |
-| Title | Text | Yes | Event name |
-| Stewards | Text | No | Comma-separated names |
-| Participants | Text | No | Comma-separated names |
-| TicketURL | URL | No | Link to ticket purchase |
+| Column | Maps To | Required | Description |
+|--------|---------|----------|-------------|
+| EventKey | Date | Yes | Format: `YYYY-MM-DD\|EventName\|...` (date is first segment) |
+| EventName | Title | Yes | Event name to display |
+| StartTime | StartTime | Yes | Start time (HH:MM) |
+| Duration | Duration | No | Duration in minutes (default: 120) |
+| Stewards | Stewards | No | Comma-separated names |
+| ParticipantNames | Participants | No | Comma-separated names |
+| TicketIDs | TicketURL | No | Link to ticket page |
+| Notes | Notes | No | Additional details |
+| Costs | Costs | No | Event costs |
 
-> **Note:** Schema will be provided by user. This is a placeholder structure.
+**Data Transformation:**
+- `Date` is extracted from `EventKey` by splitting on `|` and taking the first segment
+- `Duration` defaults to 120 minutes if not specified or empty
 
 ### Edge Cases
 
@@ -311,10 +315,10 @@ function doGet(e) {
 
 ## 9. Open Questions
 
-- [ ] Google Sheet schema (columns) - User will provide
-- [ ] Ticket URL format/host
-- [ ] Preferred date format for display
-- [ ] Maximum concurrent users expected
+- [x] Google Sheet schema (columns) - User provided
+- [x] Ticket URL format/host - From TicketIDs column
+- [x] Preferred date format for display - Standard "Monday, March 24, 2026"
+- [x] Maximum concurrent users expected - Small scale (< 100 events)
 
 ---
 

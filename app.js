@@ -62,8 +62,10 @@ function renderCalendar() {
     for (let day = 1; day <= daysInMonth; day++) {
         const cell = createDayCell(day, false, isCurrentMonth && day === today.getDate());
         const dayEvents = events.filter(e => {
-            const eventDate = new Date(e.Date);
-            return eventDate.getDate() === day;
+            const dateStr = extractDateFromEventKey(e.EventKey);
+            if (!dateStr) return false;
+            const eventDate = new Date(dateStr);
+            return !isNaN(eventDate) && eventDate.getDate() === day;
         });
         
         dayEvents.forEach(event => {
@@ -105,20 +107,26 @@ function createEventBlock(event) {
     const block = document.createElement('div');
     block.className = 'event-block';
     
-    const duration = parseInt(event.Duration) || 60;
+    const duration = parseInt(event.Duration) || 120;
     const height = Math.min(
         Math.max(duration * CONFIG.EVENT_HEIGHT_MULTIPLIER, CONFIG.EVENT_MIN_HEIGHT),
         CONFIG.EVENT_MAX_HEIGHT
     );
     block.style.height = `${height}px`;
     
-    block.textContent = event.Title || 'Event';
+    block.textContent = event.EventName || 'Event';
     
     block.addEventListener('click', () => {
         openModal(event);
     });
 
     return block;
+}
+
+function extractDateFromEventKey(eventKey) {
+    if (!eventKey) return null;
+    const parts = String(eventKey).split('|');
+    return parts[0] || null;
 }
 
 function setupNavigation() {
