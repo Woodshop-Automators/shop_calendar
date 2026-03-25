@@ -1,25 +1,29 @@
 /**
  * Google Apps Script - Event Calendar API
- * Version: 1.0.1 - Auto-deployed from GitHub via clasp
+ * Version: 1.0.2 - Auto-deployed from GitHub via clasp
  * 
  * This script reads from a Google Sheet and serves event data as JSON.
  * 
- * DEPLOYMENT: Automatically deployed via GitHub Actions on push to master.
- * See .github/workflows/deploy.yml for details.
+ * CONFIGURATION:
+ * - Default: Uses the spreadsheet the script is bound to (from Extensions > Apps Script)
+ * - Alternative: Set SPREADSHEET_ID below for standalone scripts
+ * - Sheet name: Defaults to "Events", override with ?sheet=SheetName in URL
  * 
- * MANUAL SETUP (if needed):
- * 1. Open your Google Sheet
- * 2. Go to Extensions > Apps Script
- * 3. Create a new project and paste this code
- * 4. Save and deploy as Web App (Anyone, Me)
- * 5. Copy the Web App URL to config.js
+ * DEPLOYMENT: Automatically deployed via GitHub Actions on push to master.
  */
+
+const SPREADSHEET_ID = ''; // Set this for standalone scripts, leave empty for bound scripts
 
 function doGet(e) {
   const sheetName = e.parameter.sheet || "Events";
   
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let ss;
+    if (SPREADSHEET_ID) {
+      ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    } else {
+      ss = SpreadsheetApp.getActiveSpreadsheet();
+    }
     const sheet = ss.getSheetByName(sheetName);
     
     if (!sheet) {
