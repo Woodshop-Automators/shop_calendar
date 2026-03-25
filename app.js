@@ -1,7 +1,10 @@
 let currentYear;
 let currentMonth;
 
+console.log('=== APP.JS LOADED ===');
+
 function init() {
+    console.log('=== INIT CALLED ===');
     const today = new Date();
     currentYear = today.getFullYear();
     currentMonth = today.getMonth();
@@ -153,4 +156,5 @@ function setupRetryButton() {
     document.getElementById('retry-btn').addEventListener('click', loadAndRender);
 }
 
+console.log('=== DOM LISTENER ADDED ===');
 document.addEventListener('DOMContentLoaded', init);
