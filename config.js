@@ -1,5 +1,5 @@
 const CONFIG = {
-    API_URL: 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE',
+    API_URL: 'https://script.google.com/macros/s/AKfycbwuBGJnGwQ7Kk0EGo_jUYq4BAfTslbTawy3yR3lQPHggBqUHWST48JwwxaRv_UWtP0LWQ/exec',
     REFRESH_INTERVAL_MS: 60 * 60 * 1000,
     EVENT_HEIGHT_MULTIPLIER: 2,
     EVENT_MIN_HEIGHT: 24,
