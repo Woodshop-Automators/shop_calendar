@@ -142,12 +142,13 @@ function createEventBlock(event) {
     // Get steward name
     const steward = event.Stewards ? `with ${event.Stewards}` : '';
     
-    // Get ticket URL if available
+    // Get ticket URL if available (check both TicketIDs and "Ticket URL")
     let ticketHtml = '';
-    if (event.TicketIDs) {
-        const ticketUrl = event.TicketIDs.startsWith('http') 
-            ? event.TicketIDs 
-            : `https://${event.TicketIDs}`;
+    const ticketUrlRaw = event.TicketIDs || event['Ticket URL'] || '';
+    if (ticketUrlRaw) {
+        const ticketUrl = ticketUrlRaw.startsWith('http') 
+            ? ticketUrlRaw 
+            : `https://${ticketUrlRaw}`;
         ticketHtml = `<span class="event-ticket" data-url="${ticketUrl}">Tickets</span>`;
     }
     
