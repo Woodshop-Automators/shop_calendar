@@ -142,9 +142,9 @@ function createEventBlock(event) {
     // Get steward name
     const steward = event.Stewards ? `with ${event.Stewards}` : '';
     
-    // Get ticket URL if available (check both TicketIDs and "Ticket URL")
+    // Get ticket URL if available
     let ticketHtml = '';
-    const ticketUrlRaw = event.TicketIDs || event['Ticket URL'] || '';
+    const ticketUrlRaw = event['Ticket URL'] || '';
     if (ticketUrlRaw) {
         const ticketUrl = ticketUrlRaw.startsWith('http') 
             ? ticketUrlRaw 
