@@ -33,6 +33,10 @@ function doGet(e) {
     const data = sheet.getDataRange().getValues();
     const headers = data[0];
     
+    // Debug: Log headers and row count
+    Logger.log("Headers: " + JSON.stringify(headers));
+    Logger.log("Row count: " + data.length);
+    
     const events = data.slice(1).map((row, index) => {
       const obj = {};
       headers.forEach((header, i) => {
@@ -49,10 +53,16 @@ function doGet(e) {
       
       obj._rowIndex = index + 2;
       
+      // Debug: Log each event
+      Logger.log("Row " + index + ": " + JSON.stringify(obj));
+      
       return obj;
     }).filter(event => event.EventKey || event.EventName);
     
-    return createJsonResponse({ events: events, count: events.length });
+    // Debug: Log filtered count
+    Logger.log("Filtered events: " + events.length);
+    
+    return createJsonResponse({ events: events, count: events.length, debug: { headers: headers, rowCount: data.length } });
     
   } catch (error) {
     return createErrorResponse(error.message || String(error));
