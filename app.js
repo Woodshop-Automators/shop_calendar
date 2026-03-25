@@ -107,7 +107,7 @@ function createEventBlock(event) {
     const block = document.createElement('div');
     block.className = 'event-block';
     
-    const duration = parseInt(event.Duration) || 120;
+    const duration = parseInt(event.Duration) || parseInt(event.EventDuration) || 120;
     const height = Math.min(
         Math.max(duration * CONFIG.EVENT_HEIGHT_MULTIPLIER, CONFIG.EVENT_MIN_HEIGHT),
         CONFIG.EVENT_MAX_HEIGHT
@@ -126,7 +126,7 @@ function createEventBlock(event) {
 function extractDateFromEventKey(eventKey) {
     if (!eventKey) return null;
     const parts = String(eventKey).split('|');
-    return parts[0] || null;
+    return parts[1] || null; // Format: EventName|Date|Time
 }
 
 function setupNavigation() {

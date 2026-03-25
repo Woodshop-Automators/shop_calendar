@@ -8,7 +8,7 @@ function openModal(event) {
     const dateStr = extractDateFromEventKey(event.EventKey);
     const startDate = dateStr ? new Date(dateStr) : new Date();
     const startTime = event.StartTime || '00:00';
-    const duration = parseInt(event.Duration) || 120;
+    const duration = parseInt(event.Duration) || parseInt(event.EventDuration) || 120;
     
     const [hours, minutes] = startTime.split(':').map(Number);
     const endDate = new Date(startDate);
@@ -106,7 +106,7 @@ function openModal(event) {
 function extractDateFromEventKey(eventKey) {
     if (!eventKey) return null;
     const parts = String(eventKey).split('|');
-    return parts[0] || null;
+    return parts[1] || null; // Format: EventName|Date|Time
 }
 
 function closeModal() {

@@ -35,7 +35,7 @@ function getEventsForMonth(year, month) {
 function extractDateFromEventKey(eventKey) {
     if (!eventKey) return null;
     const parts = String(eventKey).split('|');
-    return parts[0] || null;
+    return parts[1] || null; // Format: EventName|Date|Time
 }
 
 function getEventById(id) {
