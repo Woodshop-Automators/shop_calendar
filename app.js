@@ -144,6 +144,11 @@ function createEventBlock(event) {
     
     // Let CSS handle height - don't set fixed height
     // Use min-height instead to ensure minimum visibility
+    
+    // Extract duration
+    const duration = parseInt(event.Duration) || parseInt(event.EventDuration) || 60;
+    
+    // Extract time from EventKey
     const eventKeyParts = String(event.EventKey).split('|');
     const timeStr = eventKeyParts[2] || '00:00';
     const [hours, minutes] = timeStr.split(':').map(Number);
