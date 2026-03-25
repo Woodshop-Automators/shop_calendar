@@ -94,7 +94,7 @@ If you need to redeploy the API:
 1. Go to your Google Sheet
 2. Extensions > Apps Script
 3. Open the existing project or create new
-4. Paste the code from `apps-script.gs`
+4. Paste the code from `Code.gs`
 5. Click Deploy > New deployment
 6. Select "Web app"
 7. Set:
@@ -111,7 +111,7 @@ The project includes automatic deployment to Google Apps Script via GitHub Actio
 
 ### How It Works
 
-1. When `apps-script.gs` is pushed to the `master` branch, the workflow automatically runs
+1. When `Code.gs` or `appsscript.json` is pushed to the `master` branch, the workflow automatically runs
 2. It authenticates using stored credentials
 3. It pushes the code and deploys as a Web App
 
