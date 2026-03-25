@@ -154,13 +154,9 @@ main {
 
 .event-title {
     font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.event-duration {
-    font-size: 10px;
-    opacity: 0.8;
+    overflow: visible;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 .event-steward {

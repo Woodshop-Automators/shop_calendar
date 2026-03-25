@@ -152,12 +152,11 @@ function createEventBlock(event) {
         ticketHtml = `<span class="event-ticket" data-url="${ticketUrl}">Tickets</span>`;
     }
     
-    // Create block content
+    // Create block content - time and duration on same line, title always visible
     block.innerHTML = `
-        <div class="event-time">${timeDisplay}</div>
+        <div class="event-time">${timeDisplay} - ${formatDuration(duration)}</div>
         <div class="event-title">${event.EventName || 'Event'}</div>
         ${steward ? `<div class="event-steward">${steward}</div>` : ''}
-        <div class="event-duration">${formatDuration(duration)}</div>
         ${ticketHtml}
     `;
     
