@@ -1,10 +1,13 @@
 /**
  * Google Apps Script - Event Calendar API
- * Version: 1.0.1 - Auto-deployed from GitHub
+ * Version: 1.0.1 - Auto-deployed from GitHub via clasp
  * 
  * This script reads from a Google Sheet and serves event data as JSON.
  * 
- * SETUP:
+ * DEPLOYMENT: Automatically deployed via GitHub Actions on push to master.
+ * See .github/workflows/deploy.yml for details.
+ * 
+ * MANUAL SETUP (if needed):
  * 1. Open your Google Sheet
  * 2. Go to Extensions > Apps Script
  * 3. Create a new project and paste this code
