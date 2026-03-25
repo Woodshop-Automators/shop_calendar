@@ -30,7 +30,9 @@ jobs:
           CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
 
       - name: Push to Apps Script
-        run: clasp push
+        run: |
+          clasp setting.json
+          clasp push --force
 
       - name: Deploy as Web App
         run: clasp deploy --description "Deployed from GitHub Actions"
