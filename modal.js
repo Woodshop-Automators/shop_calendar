@@ -5,9 +5,21 @@ function openModal(event) {
 
     titleEl.textContent = event.EventName || 'Untitled Event';
 
-    const dateStr = extractDateFromEventKey(event.EventKey);
-    const startDate = dateStr ? new Date(dateStr) : new Date();
-    const startTime = event.StartTime || '00:00';
+    // Extract date and time from EventKey (format: EventName|Date|Time)
+    const eventKeyParts = String(event.EventKey).split('|');
+    const dateStr = eventKeyParts[1] || null;
+    const timeStr = eventKeyParts[2] || '00:00';
+    
+    // Parse date without timezone issues by splitting YYYY-MM-DD
+    let startDate = new Date();
+    if (dateStr) {
+        const [year, month, day] = dateStr.split('-').map(Number);
+        startDate = new Date(year, month - 1, day);
+    }
+    
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    startDate.setHours(hours, minutes);
+    
     const duration = parseInt(event.Duration) || parseInt(event.EventDuration) || 120;
     
     const [hours, minutes] = startTime.split(':').map(Number);
@@ -103,10 +115,10 @@ function openModal(event) {
     modal.style.display = 'block';
 }
 
-function extractDateFromEventKey(eventKey) {
+function extractTimeFromEventKey(eventKey) {
     if (!eventKey) return null;
     const parts = String(eventKey).split('|');
-    return parts[1] || null; // Format: EventName|Date|Time
+    return parts[2] || null; // Format: EventName|Date|Time
 }
 
 function closeModal() {

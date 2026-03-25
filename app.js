@@ -1,10 +1,7 @@
 let currentYear;
 let currentMonth;
 
-console.log('=== APP.JS LOADED ===');
-
 function init() {
-    console.log('=== INIT CALLED ===');
     const today = new Date();
     currentYear = today.getFullYear();
     currentMonth = today.getMonth();
@@ -65,10 +62,12 @@ function renderCalendar() {
     for (let day = 1; day <= daysInMonth; day++) {
         const cell = createDayCell(day, false, isCurrentMonth && day === today.getDate());
         const dayEvents = events.filter(e => {
-            const dateStr = extractDateFromEventKey(e.EventKey);
+            const eventKeyParts = String(e.EventKey).split('|');
+            const dateStr = eventKeyParts[1];
             if (!dateStr) return false;
-            const eventDate = new Date(dateStr);
-            return !isNaN(eventDate) && eventDate.getDate() === day;
+            // Parse YYYY-MM-DD manually to avoid timezone issues
+            const [year, month, d] = dateStr.split('-').map(Number);
+            return year === currentYear && (month - 1) === currentMonth && d === day;
         });
         
         dayEvents.forEach(event => {
@@ -156,5 +155,4 @@ function setupRetryButton() {
     document.getElementById('retry-btn').addEventListener('click', loadAndRender);
 }
 
-console.log('=== DOM LISTENER ADDED ===');
 document.addEventListener('DOMContentLoaded', init);
