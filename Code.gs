@@ -7,12 +7,27 @@
  * CONFIGURATION:
  * - Default: Uses the spreadsheet the script is bound to (from Extensions > Apps Script)
  * - Alternative: Set SPREADSHEET_ID below for standalone scripts
- * - Sheet name: Defaults to "Events", override with ?sheet=SheetName in URL
+ * - Sheet name: Defaults to "Registry-Cal-test", override with ?sheet=SheetName in URL
  * 
  * DEPLOYMENT: Automatically deployed via GitHub Actions on push to master.
  */
 
 const SPREADSHEET_ID = '1qUZdVy834u6eoXkEciI7-hsgdUPcJHQudwr7d75eHQY';
+
+// Column name mapping from sheet to internal names
+const COLUMN_MAP = {
+  'Event Key': 'EventKey',
+  'Event ID': 'CalendarEventID',
+  'Name': 'EventName',
+  'Date': 'Date',
+  'Names': 'ParticipantNames',
+  'Emails': 'ParticipantEmails',
+  'Cost': 'Costs',
+  'Modified': 'LastModified',
+  'Ticket ID': 'TicketIDs',
+  'Stewards': 'Stewards',
+  'EventDuration': 'Duration'
+};
 
 function doGet(e) {
   const sheetName = e.parameter.sheet || "Registry-Cal-test";
@@ -48,13 +63,13 @@ function doGet(e) {
           value = String(value).trim();
         }
         
-        obj[header] = value;
+        // Map to internal column name
+        const internalName = COLUMN_MAP[header] || header;
+        obj[internalName] = value;
+        obj[header] = value; // Keep original too
       });
       
       obj._rowIndex = index + 2;
-      
-      // Debug: Log each event
-      Logger.log("Row " + index + ": " + JSON.stringify(obj));
       
       return obj;
     }).filter(event => event.EventKey || event.EventName);
