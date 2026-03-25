@@ -139,15 +139,36 @@ function createEventBlock(event) {
         return `${hrs}h ${minsRem}m`;
     };
     
+    // Get steward name
+    const steward = event.Stewards ? `with ${event.Stewards}` : '';
+    
+    // Get ticket URL if available
+    let ticketHtml = '';
+    if (event.TicketIDs) {
+        const ticketUrl = event.TicketIDs.startsWith('http') 
+            ? event.TicketIDs 
+            : `https://${event.TicketIDs}`;
+        ticketHtml = `<span class="event-ticket" data-url="${ticketUrl}">Tickets</span>`;
+    }
+    
     // Create block content
     block.innerHTML = `
         <div class="event-time">${timeDisplay}</div>
         <div class="event-title">${event.EventName || 'Event'}</div>
+        ${steward ? `<div class="event-steward">${steward}</div>` : ''}
         <div class="event-duration">${formatDuration(duration)}</div>
+        ${ticketHtml}
     `;
     
-    block.addEventListener('click', () => {
-        openModal(event);
+    // Handle click - open modal or ticket link
+    block.addEventListener('click', (e) => {
+        const ticketEl = e.target.closest('.event-ticket');
+        if (ticketEl) {
+            e.stopPropagation();
+            window.open(ticketEl.dataset.url, '_blank');
+        } else {
+            openModal(event);
+        }
     });
 
     return block;
