@@ -137,12 +137,30 @@ main {
     cursor: pointer;
     transition: filter 0.2s;
     overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .event-block:hover {
     filter: brightness(1.1);
+}
+
+.event-time {
+    font-size: 10px;
+    opacity: 0.9;
+}
+
+.event-title {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.event-duration {
+    font-size: 10px;
+    opacity: 0.8;
 }
 
 #loading,

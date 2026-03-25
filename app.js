@@ -61,13 +61,20 @@ function renderCalendar() {
     
     for (let day = 1; day <= daysInMonth; day++) {
         const cell = createDayCell(day, false, isCurrentMonth && day === today.getDate());
-        const dayEvents = events.filter(e => {
+        let dayEvents = events.filter(e => {
             const eventKeyParts = String(e.EventKey).split('|');
             const dateStr = eventKeyParts[1];
             if (!dateStr) return false;
             // Parse YYYY-MM-DD manually to avoid timezone issues
             const [year, month, d] = dateStr.split('-').map(Number);
             return year === currentYear && (month - 1) === currentMonth && d === day;
+        });
+        
+        // Sort by start time (earlier times first)
+        dayEvents.sort((a, b) => {
+            const timeA = String(a.EventKey).split('|')[2] || '00:00';
+            const timeB = String(b.EventKey).split('|')[2] || '00:00';
+            return timeA.localeCompare(timeB);
         });
         
         dayEvents.forEach(event => {
@@ -116,7 +123,28 @@ function createEventBlock(event) {
     );
     block.style.height = `${height}px`;
     
-    block.textContent = event.EventName || 'Event';
+    // Extract time from EventKey
+    const eventKeyParts = String(event.EventKey).split('|');
+    const timeStr = eventKeyParts[2] || '00:00';
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const startTime = new Date(2000, 0, 1, hours, minutes);
+    const timeDisplay = startTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    
+    // Format duration
+    const formatDuration = (mins) => {
+        const hrs = Math.floor(mins / 60);
+        const minsRem = mins % 60;
+        if (hrs === 0) return `${minsRem}m`;
+        if (minsRem === 0) return `${hrs}h`;
+        return `${hrs}h ${minsRem}m`;
+    };
+    
+    // Create block content
+    block.innerHTML = `
+        <div class="event-time">${timeDisplay}</div>
+        <div class="event-title">${event.EventName || 'Event'}</div>
+        <div class="event-duration">${formatDuration(duration)}</div>
+    `;
     
     block.addEventListener('click', () => {
         openModal(event);
