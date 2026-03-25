@@ -101,7 +101,7 @@ function openModal(event) {
         `;
     }
 
-    const ticketUrlRaw = event['Ticket URL'] || event.TicketIDs || '';
+    const ticketUrlRaw = event['Ticket URL'] || '';
     if (ticketUrlRaw) {
         const ticketUrl = ticketUrlRaw.startsWith('http') 
             ? ticketUrlRaw 
