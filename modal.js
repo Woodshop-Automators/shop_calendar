@@ -101,10 +101,11 @@ function openModal(event) {
         `;
     }
 
-    if (event.TicketIDs) {
-        const ticketUrl = event.TicketIDs.startsWith('http') 
-            ? event.TicketIDs 
-            : `https://${event.TicketIDs}`;
+    const ticketUrlRaw = event['Ticket URL'] || event.TicketIDs || '';
+    if (ticketUrlRaw) {
+        const ticketUrl = ticketUrlRaw.startsWith('http') 
+            ? ticketUrlRaw 
+            : `https://${ticketUrlRaw}`;
         detailsHTML += `
             <a href="${ticketUrl}" target="_blank" class="ticket-link">Get Tickets</a>
         `;
