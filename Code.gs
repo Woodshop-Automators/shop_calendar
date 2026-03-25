@@ -15,7 +15,7 @@
 const SPREADSHEET_ID = '1qUZdVy834u6eoXkEciI7-hsgdUPcJHQudwr7d75eHQY';
 
 function doGet(e) {
-  const sheetName = e.parameter.sheet || "Events";
+  const sheetName = e.parameter.sheet || "Registry-Cal-test";
   
   try {
     let ss;
