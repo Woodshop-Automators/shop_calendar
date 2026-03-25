@@ -3,15 +3,23 @@ let lastFetchTime = null;
 
 async function fetchEvents() {
     try {
+        console.log('Fetching from:', CONFIG.API_URL);
         const response = await fetch(CONFIG.API_URL);
+        console.log('Response status:', response.status);
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log('API Response:', data);
+        
         if (data.error) {
             throw new Error(data.message || 'API returned error');
         }
         cachedEvents = Array.isArray(data) ? data : (data.events || []);
+        console.log('Cached events count:', cachedEvents.length);
+        console.log('First event sample:', cachedEvents[0]);
+        
         lastFetchTime = new Date();
         updateLastUpdatedDisplay();
         return cachedEvents;
@@ -22,14 +30,21 @@ async function fetchEvents() {
 }
 
 function getEventsForMonth(year, month) {
-    return cachedEvents.filter(event => {
+    const filtered = cachedEvents.filter(event => {
         const dateStr = extractDateFromEventKey(event.EventKey);
-        if (!dateStr) return false;
+        if (!dateStr) {
+            console.log('No date for event:', event.EventName, 'EventKey:', event.EventKey);
+            return false;
+        }
         const eventDate = new Date(dateStr);
+        console.log('Event:', event.EventName, 'DateStr:', dateStr, 'Parsed:', eventDate, 'Year:', eventDate.getFullYear(), 'Month:', eventDate.getMonth(), 'Target:', year, month);
+        
         return !isNaN(eventDate) && 
                eventDate.getFullYear() === year && 
                eventDate.getMonth() === month;
     });
+    console.log('Filtered events for', year, month, ':', filtered.length);
+    return filtered;
 }
 
 function extractDateFromEventKey(eventKey) {
