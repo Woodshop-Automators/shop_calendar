@@ -116,14 +116,8 @@ function createEventBlock(event) {
     const block = document.createElement('div');
     block.className = 'event-block';
     
-    const duration = parseInt(event.Duration) || parseInt(event.EventDuration) || 120;
-    const height = Math.min(
-        Math.max(duration * CONFIG.EVENT_HEIGHT_MULTIPLIER, CONFIG.EVENT_MIN_HEIGHT),
-        CONFIG.EVENT_MAX_HEIGHT
-    );
-    block.style.height = `${height}px`;
-    
-    // Extract time from EventKey
+    // Let CSS handle height - don't set fixed height
+    // Use min-height instead to ensure minimum visibility
     const eventKeyParts = String(event.EventKey).split('|');
     const timeStr = eventKeyParts[2] || '00:00';
     const [hours, minutes] = timeStr.split(':').map(Number);

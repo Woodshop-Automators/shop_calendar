@@ -136,11 +136,11 @@ main {
     margin: 2px 0;
     cursor: pointer;
     transition: filter 0.2s;
-    overflow: hidden;
-    white-space: nowrap;
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-height: 40px;
+    overflow: visible;
 }
 
 .event-block:hover {
