@@ -1,5 +1,6 @@
 let currentYear;
 let currentMonth;
+let isRefreshing = false;
 
 function init() {
     const today = new Date();
@@ -9,27 +10,52 @@ function init() {
     initModal();
     setupNavigation();
     setupRetryButton();
+    setupRefreshButton();
     
     loadAndRender();
     startAutoRefresh();
 }
 
-async function loadAndRender() {
+async function loadAndRender(forceRefresh = false) {
     const loadingEl = document.getElementById('loading');
     const errorEl = document.getElementById('error');
     const gridEl = document.getElementById('calendar-grid');
+    const refreshBtn = document.getElementById('refresh-btn');
 
-    loadingEl.style.display = 'block';
+    if (!forceRefresh) {
+        // Check if we have cached data - if so, render immediately without loading spinner
+        const cached = localStorage.getItem('calendar_events');
+        if (cached) {
+            try {
+                const events = JSON.parse(cached);
+                if (events.length > 0) {
+                    renderCalendar();
+                }
+            } catch (e) {}
+        }
+    }
+    
+    if (forceRefresh && refreshBtn) {
+        refreshBtn.disabled = true;
+        refreshBtn.textContent = '...';
+    }
+
+    loadingEl.style.display = forceRefresh ? 'block' : 'none';
     errorEl.style.display = 'none';
     gridEl.innerHTML = '';
 
     try {
-        await fetchEvents();
+        await fetchEvents(forceRefresh);
         loadingEl.style.display = 'none';
         renderCalendar();
     } catch (error) {
         loadingEl.style.display = 'none';
         errorEl.style.display = 'block';
+    } finally {
+        if (refreshBtn && forceRefresh) {
+            refreshBtn.disabled = false;
+            refreshBtn.textContent = '↻ Refresh';
+        }
     }
 }
 
@@ -195,7 +221,14 @@ function setupNavigation() {
 }
 
 function setupRetryButton() {
-    document.getElementById('retry-btn').addEventListener('click', loadAndRender);
+    document.getElementById('retry-btn').addEventListener('click', () => loadAndRender(true));
+}
+
+function setupRefreshButton() {
+    const refreshBtn = document.getElementById('refresh-btn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => loadAndRender(true));
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);

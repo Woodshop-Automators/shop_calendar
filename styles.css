@@ -68,6 +68,17 @@ header h1 {
     text-align: center;
 }
 
+#refresh-btn {
+    margin-left: 12px;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+#refresh-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 #last-updated {
     font-size: 12px;
     opacity: 0.8;

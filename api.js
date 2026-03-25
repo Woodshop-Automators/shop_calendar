@@ -1,7 +1,45 @@
 let cachedEvents = [];
 let lastFetchTime = null;
 
-async function fetchEvents() {
+const CACHE_KEY = 'calendar_events';
+const CACHE_TIMESTAMP_KEY = 'calendar_events_timestamp';
+
+function getCachedEvents() {
+    try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+        if (cached && timestamp) {
+            return {
+                events: JSON.parse(cached),
+                timestamp: new Date(timestamp)
+            };
+        }
+    } catch (e) {
+        console.warn('Failed to read from localStorage:', e);
+    }
+    return null;
+}
+
+function setCachedEvents(events) {
+    try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(events));
+        localStorage.setItem(CACHE_TIMESTAMP_KEY, new Date().toISOString());
+    } catch (e) {
+        console.warn('Failed to write to localStorage:', e);
+    }
+}
+
+async function fetchEvents(forceRefresh = false) {
+    // Try to load from cache first if not forcing refresh
+    if (!forceRefresh) {
+        const cached = getCachedEvents();
+        if (cached && cached.events.length > 0) {
+            cachedEvents = cached.events;
+            lastFetchTime = cached.timestamp;
+            updateLastUpdatedDisplay();
+        }
+    }
+    
     try {
         const response = await fetch(CONFIG.API_URL);
         if (!response.ok) {
@@ -11,12 +49,23 @@ async function fetchEvents() {
         if (data.error) {
             throw new Error(data.message || 'API returned error');
         }
-        cachedEvents = Array.isArray(data) ? data : (data.events || []);
+        const newEvents = Array.isArray(data) ? data : (data.events || []);
+        
+        // Update cache if we got fresh data
+        if (newEvents.length > 0) {
+            setCachedEvents(newEvents);
+        }
+        
+        cachedEvents = newEvents;
         lastFetchTime = new Date();
         updateLastUpdatedDisplay();
         return cachedEvents;
     } catch (error) {
         console.error('Failed to fetch events:', error);
+        // If fetch fails but we have cached data, don't throw
+        if (cachedEvents.length > 0) {
+            return cachedEvents;
+        }
         throw error;
     }
 }
@@ -50,6 +99,10 @@ function updateLastUpdatedDisplay() {
 }
 
 function startAutoRefresh() {
-    fetchEvents();
-    setInterval(fetchEvents, CONFIG.REFRESH_INTERVAL_MS);
+    fetchEvents(); // Initial fetch (will use cache if available)
+    setInterval(() => fetchEvents(true), CONFIG.REFRESH_INTERVAL_MS);
+}
+
+function refreshEvents() {
+    return fetchEvents(true);
 }
