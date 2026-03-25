@@ -22,7 +22,6 @@ function openModal(event) {
     
     const duration = parseInt(event.Duration) || parseInt(event.EventDuration) || 120;
     
-    const [hours, minutes] = startTime.split(':').map(Number);
     const endDate = new Date(startDate);
     endDate.setHours(hours, minutes + duration);
 
