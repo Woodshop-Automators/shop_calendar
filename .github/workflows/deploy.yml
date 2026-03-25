@@ -2,9 +2,6 @@ name: Deploy to Google Apps Script
 
 on:
   push:
-    paths:
-      - 'Code.gs'
-      - 'appsscript.json'
     branches:
       - master
   workflow_dispatch:
