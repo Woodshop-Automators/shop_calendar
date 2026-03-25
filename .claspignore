@@ -8,7 +8,14 @@ SPEC.md
 USERS.md
 ADMINS.md
 DEVELOPERS.md
-*.test.js
+.clasp.json
+.claspignore
 .github
 tests
 .env
+config.js
+api.js
+app.js
+modal.js
+index.html
+styles.css
