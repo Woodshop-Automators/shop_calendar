@@ -7,15 +7,18 @@ Welcome to the Event Calendar! This guide helps you use the calendar to find and
 1. Open the calendar website in your web browser
 2. The current month's events are displayed by default
 3. Use the **Prev** and **Next** buttons to navigate between months
-4. Today's date is highlighted in light blue
+4. Click **Refresh** to fetch the latest events
+5. Today's date is highlighted in light blue
 
-## Understanding Event Blocks
+## Event Block Information
 
-- Event blocks show the event name
-- The height of the block indicates the duration:
-  - Taller blocks = longer events
-  - Shorter blocks = shorter events
-- Click any event block to see full details
+Each event block displays:
+- **Time & Duration**: e.g., "6:00 PM - 2h"
+- **Event Name**: The title of the class/event
+- **Steward**: Who is running the event (e.g., "with Sally")
+- **Tickets**: Button appears if tickets are available
+
+Click any event block to see full details in a popup.
 
 ## Viewing Event Details
 
@@ -30,22 +33,31 @@ Click on any event block to open a modal showing:
 
 ## Booking Tickets
 
-If an event has tickets available:
+Two ways to get tickets:
 
-1. Click the event block to open details
-2. Look for the **"Get Tickets"** button
-3. Click it to open the ticket page in a new tab
-4. Follow the instructions on the ticket site to complete your booking
+1. **Quick access**: Click "Tickets" in the event block
+2. **Full details**: Click the event block, then click "Get Tickets" in the modal
+
+Both open the ticket page in a new tab.
+
+## Refreshing Events
+
+- **Automatic**: Calendar refreshes every 15 minutes
+- **Manual**: Click the "↻ Refresh" button to get latest events immediately
 
 ## Troubleshooting
 
 **Events not showing?**
-- Try refreshing the page (press F5 or click refresh)
-- The calendar updates automatically every hour
+- Click the **Refresh** button to fetch latest events
+- Check you're viewing the correct month
 
 **Can't see event details?**
 - Make sure pop-ups are allowed for this site
 - Try a different web browser
+
+**Ticket button not showing?**
+- The event may not have tickets available
+- Check the event modal for ticket link
 
 **Wrong month showing?**
 - Use the Prev/Next buttons to navigate to the correct month
