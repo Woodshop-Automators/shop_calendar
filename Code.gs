@@ -12,7 +12,7 @@
  * DEPLOYMENT: Automatically deployed via GitHub Actions on push to master.
  */
 
-const SPREADSHEET_ID = ''; // Set this for standalone scripts, leave empty for bound scripts
+const SPREADSHEET_ID = '1qUZdVy834u6eoXkEciI7-hsgdUPcJHQudwr7d75eHQY';
 
 function doGet(e) {
   const sheetName = e.parameter.sheet || "Events";
