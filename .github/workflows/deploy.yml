@@ -30,4 +30,4 @@ jobs:
         run: clasp push --force
 
       - name: Deploy as Web App
-        run: clasp deploy --description "Deployed from GitHub Actions"
+        run: clasp deploy
