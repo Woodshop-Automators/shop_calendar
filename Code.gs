@@ -1,6 +1,6 @@
 /**
  * Google Apps Script - Event Calendar API
- * Version: 1.0.2 - Auto-deployed from GitHub via clasp
+ * Version: 0.9 - Auto-deployed from GitHub via clasp
  * 
  * This script reads from a Google Sheet and serves event data as JSON.
  * 
